@@ -1,4 +1,3 @@
-
 # Network-on-Chip (NoC) Project
 
 ## Overview
@@ -9,20 +8,24 @@ This repository contains the RTL design and implementation of a 4x4 Network-on-C
 
 1. [Introduction](#introduction)
 2. [Project Structure](#project-structure)
-3. [Modules Description](#modules-description)
+3. [Interfaces Description](#interfaces-description)
+   - [ReqAckIO Interface](#reqackio-interface)
+   - [ReqGntIO Interface](#reqgntio-interface)
+   - [FifoIO Interface](#fifoio-interface)
+4. [Modules Description](#modules-description)
    - [Buffer Unit](#buffer-unit)
    - [Routing Unit](#routing-unit)
    - [Switch Allocator](#switch-allocator)
    - [Switch](#switch)
    - [Router](#router)
    - [Node](#node)
-4. [Testing and Simulation](#testing-and-simulation)
+5. [Testing and Simulation](#testing-and-simulation)
    - [Primitive Components Testing](#primitive-components-testing)
    - [Router Testing](#router-testing)
    - [Whole NOC Testing](#whole-noc-testing)
-5. [Results](#results)
-6. [Contributing](#contributing)
-7. [License](#license)
+6. [Results](#results)
+7. [Contributing](#contributing)
+8. [License](#license)
 
 ## Introduction
 
@@ -41,25 +44,23 @@ The project is organized into the following directories:
 
 The NoC project uses several key interfaces to facilitate communication between different modules. These interfaces are defined in `interfaces.sv` and are crucial for ensuring modularity and reusability of the code. Below are the descriptions of each interface:
 
-### 1. ReqAckIO Interface
+### ReqAckIO Interface
 
 The `ReqAckIO` interface is designed to manage the request-acknowledge handshaking mechanism, which is essential for synchronous communication between modules. This interface is used in BufferUnit, Router, Switch, and Node modules.
 
-### 2. ReqGntIO Interface
+### ReqGntIO Interface
 
 The `ReqGntIO` interface is used for managing request-grant handshaking, specifically between buffer units and the switch allocator.
 
-### 3. FifoIO Interface
+### FifoIO Interface
 
 The `FifoIO` interface encapsulates the signals required for FIFO operations, including reading and writing data, as well as managing buffer status.
-
 
 ## Modules Description
 
 ### Buffer Unit
 
 The Buffer Unit is a critical component that manages the reception, storage, and forwarding of data packets. It uses a FIFO for storing packets and handles the request-acknowledge handshaking mechanism.
-
 
 **File:** `Buffer_Unit.sv`
 
@@ -121,7 +122,6 @@ When a node generates a packet destined for a random destination node, it sends 
 Each node operates independently, sending and receiving packets, and synchronization is achieved through the high-level communication provided by the mailboxes. Additionally, the mailbox ensures a finite number of packets in-flight for each node, which is beneficial for debugging and testing purposes. The number of simultaneous in-flight packets can be modified by changing the size of the mailboxes in NOC_TB.sv.
 
 This approach ensures that all nodes can communicate effectively, allowing for thorough testing of the NoC's functionality.
-
 
 **File:** `NOC_TB.sv`
 
