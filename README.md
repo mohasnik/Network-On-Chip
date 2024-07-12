@@ -3,7 +3,7 @@
 
 ## Overview
 
-This repository contains the RTL design and implementation of a 4x4 Network-on-Chip (NoC) with a mesh topology. The project is part of the Core-Based Embedded System Design course. It covers the detailed SystemVerilog design of each module, including buffer units, routing units, switch allocators, switches, routers, and nodes, along with high-level testing scenarios.
+This repository contains the RTL design and implementation of a 4x4 Network-on-Chip (NoC) with a mesh topology with a complete high-level SystemVerilog testing. The project is part of the Core-Based Embedded System Design course. It covers the detailed SystemVerilog design of each module, including buffer units, routing units, switch allocators, switches, routers, and nodes, along with high-level testing scenarios.
 
 ## Table of Contents
 
@@ -26,7 +26,7 @@ This repository contains the RTL design and implementation of a 4x4 Network-on-C
 
 ## Introduction
 
-This project implements a Network-on-Chip (NoC) with a mesh topology, designed to facilitate efficient data transfer across a chip. The design is modular, allowing for scalability and flexibility in various embedded system applications. The NoC is designed parametrically to create different sizes of networks, with the current implementation focusing on a 4x4 grid.
+This project implements a Network-on-Chip (NoC) with a mesh topology, designed to facilitate efficient data transfer across a chip. The design is modular, allowing for scalability and flexibility in various embedded system applications. The NoC is designed parametrically to create different sizes of networks, with the current implementation focusing on a 4x4 grid. Moreover, using SystemVerilog facilities, the entire NoC is tested in different scenarios.
 
 ## Project Structure
 
@@ -37,11 +37,29 @@ The project is organized into the following directories:
 - `testbenches/`: Contains testbenches for individual modules and the entire system.
 - `docs/`: Documentation and reports related to the project.
 
+## Interfaces Description
+
+The NoC project uses several key interfaces to facilitate communication between different modules. These interfaces are defined in `interfaces.sv` and are crucial for ensuring modularity and reusability of the code. Below are the descriptions of each interface:
+
+### 1.ReqAckIO Interface
+
+The `ReqAckIO` interface is designed to manage the request-acknowledge handshaking mechanism, which is essential for synchronous communication between modules. This interface is used in BufferUnit, Router, Switch, and Node modules.
+
+### 2. ReqGntIO Interface
+
+The `ReqGntIO` interface is used for managing request-grant handshaking, specifically between buffer units and the switch allocator.
+
+### 3.FifoIO Interface
+
+The `FifoIO` interface encapsulates the signals required for FIFO operations, including reading and writing data, as well as managing buffer status.
+
+
 ## Modules Description
 
 ### Buffer Unit
 
 The Buffer Unit is a critical component that manages the reception, storage, and forwarding of data packets. It uses a FIFO for storing packets and handles the request-acknowledge handshaking mechanism.
+
 
 **File:** `Buffer_Unit.sv`
 
