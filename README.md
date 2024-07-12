@@ -41,7 +41,7 @@ The project is organized into the following directories:
 
 The NoC project uses several key interfaces to facilitate communication between different modules. These interfaces are defined in `interfaces.sv` and are crucial for ensuring modularity and reusability of the code. Below are the descriptions of each interface:
 
-### 1.ReqAckIO Interface
+### 1. ReqAckIO Interface
 
 The `ReqAckIO` interface is designed to manage the request-acknowledge handshaking mechanism, which is essential for synchronous communication between modules. This interface is used in BufferUnit, Router, Switch, and Node modules.
 
@@ -49,7 +49,7 @@ The `ReqAckIO` interface is designed to manage the request-acknowledge handshaki
 
 The `ReqGntIO` interface is used for managing request-grant handshaking, specifically between buffer units and the switch allocator.
 
-### 3.FifoIO Interface
+### 3. FifoIO Interface
 
 The `FifoIO` interface encapsulates the signals required for FIFO operations, including reading and writing data, as well as managing buffer status.
 
@@ -93,11 +93,6 @@ The Node module is used for testing purposes. It injects packets into the networ
 
 **File:** `Node.sv`
 
-### Additional Modules
-
-- **FIFO:** A dynamic FIFO used by the Buffer Unit. (File: `FIFO.sv`)
-- **Interfaces:** Common interfaces used across modules. (File: `interfaces.sv`)
-
 ## Testing and Simulation
 
 ### Primitive Components Testing
@@ -118,6 +113,15 @@ The functionality of the Router is verified using a comprehensive testbench that
 ### Whole NOC Testing
 
 A high-level simulation of the entire 4x4 NoC is performed using nodes that generate and receive packets. The simulation verifies the correct operation of the entire network and ensures that data is transferred efficiently across the chip.
+
+To verify the functionality of the entire Network-On-Chip (NoC), a local node module, Node, is created. This module is responsible for sending and receiving packets during simulation. Nodes utilize an array of mailboxes for high-level communication, where each node has a unique mailbox corresponding to its index.
+
+When a node generates a packet destined for a random destination node, it sends the packet details through its mailbox to the destination node. This ensures that the destination node is aware of the incoming packets during the test simulation. Upon arrival of a packet at a node, the node iterates over its mailbox queue to verify if the packet is expected. If the packet is not found in the mailbox, it indicates that the packet was routed incorrectly, which triggers an error.
+
+Each node operates independently, sending and receiving packets, and synchronization is achieved through the high-level communication provided by the mailboxes. Additionally, the mailbox ensures a finite number of packets in-flight for each node, which is beneficial for debugging and testing purposes. The number of simultaneous in-flight packets can be modified by changing the size of the mailboxes in NOC_TB.sv.
+
+This approach ensures that all nodes can communicate effectively, allowing for thorough testing of the NoC's functionality.
+
 
 **File:** `NOC_TB.sv`
 
